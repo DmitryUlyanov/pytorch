@@ -9,7 +9,7 @@ class _InstanceNorm(_BatchNorm):
 
     def forward(self, input):
         self._check_input_dim(input)
-
+        
         b, c = input.size(0), input.size(1)
 
         # Repeat stored stats and affine transform params
@@ -26,7 +26,7 @@ class _InstanceNorm(_BatchNorm):
 
         out = F.batch_norm(
             input_reshaped, running_mean, running_var, weight, bias,
-            self.training, self.momentum, self.eps)
+            True, self.momentum, self.eps)
 
         # Reshape back
         self.running_mean.copy_(running_mean.view(b, c).mean(0))
